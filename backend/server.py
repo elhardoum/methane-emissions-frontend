@@ -1,13 +1,15 @@
-from flask import (Flask, render_template)
+from flask import (Flask, send_from_directory)
 from os import environ
 import config
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras.models import model_from_json
+# import tensorflow as tf
+# from tensorflow import keras
+# from tensorflow.keras.models import model_from_json
 import json
 import imageio
 
-app = Flask(__name__, static_url_path='', static_folder='public', template_folder='templates')
+app = Flask(__name__,
+    static_url_path='/',
+    static_folder='www')
 app.secret_key = environ.get('FLASK_SECRET', config.FLASK_SECRET)
 
 def predict_and_show_filename(model, filename):
@@ -28,14 +30,9 @@ def get_model():
     loaded_model.load_weights(config.MODEL_LOCATION)
     return loaded_model
 
-@app.route('/', methods=['GET'])
-def index(locale=''):
-    model = get_model()
-
-    # print( predict_and_show_filename(model, '/tmp/17A.png') )
-
-    return render_template('index.html',
-        title='Methane Emissions Predictions App')
+@app.route('/<path:path>', methods=['GET'])
+def index(path):
+    return send_from_directory('www', path)
 
 if __name__ == '__main__':
     app.run(host=environ.get('HTTP_HOST', '0.0.0.0'), port=environ.get('HTTP_PORT', 3000))

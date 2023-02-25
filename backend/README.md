@@ -23,6 +23,10 @@ pip install -r requirements.txt
 
 Open `config.py` and customize the settings.
 
+## Frontend App
+
+You need to build the react app first, refer to the documentation in the `frontend` folder.
+
 ## Backend Server
 
 Start the app server:
