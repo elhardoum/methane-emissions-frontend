@@ -5,6 +5,10 @@ function Form() {
   const [selectedFile, setSelectedFile] = useState();
   const [isSelected, setIsSelected] = useState(false);
 
+  let lat = 51.0447;
+  let lng = -114.0719;
+  let url = `https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyAlj0pxuucJSlRM71sIzoHXVQMqXk9C1Yo&markers=${lat},${lng}&size=640x640&zoom=11`;
+
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
     setIsSelected(true);
@@ -15,7 +19,7 @@ function Form() {
 
     formData.append("File", selectedFile);
 
-    fetch("https://api/post-image", {
+    fetch("/api/post-image", {
       method: "POST",
       body: formData,
     })
@@ -46,6 +50,10 @@ function Form() {
         <button className="btn" onClick={handleSubmission}>
           Submit
         </button>
+      </div>
+
+      <div>
+        <img className="map" src={url} alt="" />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The frontend is a React application. Its main responsibility is to provide a form for uploading an image that further will be used in the backend.
 
 ## Available Scripts
 

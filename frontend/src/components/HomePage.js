@@ -14,11 +14,11 @@ function HomePage() {
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "" }}
+        bootstrapURLKeys={{ key: "AIzaSyAlj0pxuucJSlRM71sIzoHXVQMqXk9C1Yo" }}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
       >
-        <Location lat={59.955413} lng={30.337844} text="My Marker" />
+        <Location lat={59.955413} lng={-30.337844} text="My Marker" />
       </GoogleMapReact>
     </div>
   );
