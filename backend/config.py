@@ -1,0 +1,1 @@
+FLASK_SECRET=b'EHoPoGX2DLKIqEhMxZlpFkritOyZTeMVpp'
