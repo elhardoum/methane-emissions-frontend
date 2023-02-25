@@ -15,7 +15,7 @@ function Form() {
 
     formData.append("File", selectedFile);
 
-    fetch("https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>", {
+    fetch("/api/post-image", {
       method: "POST",
       body: formData,
     })
