@@ -11,8 +11,13 @@ The backend is meant to be a simple Flask server that would serve the frontend a
 After cloning the repository, create a virtual environment and install the required dependencies:
 
 ```sh
+# create a virtual environment
 virtualenv -p python3 env
+
+# activtate the env
 source env/bin/activate
+
+# install dependencies
 pip install -r requirements.txt
 ```
 
