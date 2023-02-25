@@ -28,5 +28,5 @@ Open `config.py` and customize the settings.
 Start the app server:
 
 ```sh
-FLASK_APP=server.py FLASK_ENV=development flask run --port 3000
+FLASK_APP=server.py DEBUG=1 flask run --port 3000
 ```
