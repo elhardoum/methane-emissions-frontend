@@ -1,6 +1,6 @@
 # methane-emissions-frontend
 
-# Project strucutre
+## Project structure
 
 ```text
 ```
