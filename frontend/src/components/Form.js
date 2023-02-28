@@ -8,6 +8,10 @@ function Form() {
   const [_lng, setLng] = useState();
   const [pred, setPred] = useState();
 
+  // let lat = 51.0447;
+  // let lng = -114.0719;
+  // let url = `https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyAlj0pxuucJSlRM71sIzoHXVQMqXk9C1Yo&markers=${lat},${lng}&size=640x640&zoom=11`;
+
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
     setIsSelected(true);
@@ -18,9 +22,9 @@ function Form() {
 
     formData.append("File", selectedFile);
 
-    setLat(undefined)
-    setLng(undefined)
-    setPred(undefined)
+    setLat(undefined);
+    setLng(undefined);
+    setPred(undefined);
 
     fetch("/api/post-image", {
       method: "POST",
@@ -28,14 +32,14 @@ function Form() {
     })
       .then((response) => response.json())
       .then((result) => {
-        const {lat, lng, dataset} = result
-        if ( lat && lng ) {
-          setLat(lat)
-          setLng(lng)
+        const { lat, lng, dataset } = result;
+        if (lat && lng) {
+          setLat(lat);
+          setLng(lng);
         }
 
-        if ( dataset && dataset[0] ) {
-          setPred(dataset[0])
+        if (dataset && dataset[0]) {
+          setPred(dataset[0]);
         }
       })
       .catch((error) => {
@@ -62,9 +66,13 @@ function Form() {
           Submit
         </button>
       </div>
-        { !!(pred) && <pre>Prediction: {pred}</pre> }
+      {!!pred && <pre>Prediction: {pred}</pre>}
 
-          { Boolean(_lat && _lng) && <img src={`https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyAlj0pxuucJSlRM71sIzoHXVQMqXk9C1Yo&markers=${_lat},${_lng}&size=640x640&zoom=11`} /> }
+      {Boolean(_lat && _lng) && (
+        <img
+          src={`https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyAlj0pxuucJSlRM71sIzoHXVQMqXk9C1Yo&markers=${_lat},${_lng}&size=640x640&zoom=11`}
+        />
+      )}
     </div>
   );
 }

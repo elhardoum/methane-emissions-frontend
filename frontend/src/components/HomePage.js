@@ -1,13 +1,26 @@
-import React from "react";
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
 function HomePage() {
-  const location = {
-    address: "1600 Amphitheatre Parkway, Mountain View, california.",
-    lat: 37.42216,
-    lng: -122.08427,
-  };
+  const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
-  return <div>HomePage</div>;
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: `${API_KEY}`,
+  });
+  if (!isLoaded) return <div> Loading ...</div>;
+
+  return <Map />;
+}
+
+function Map() {
+  return (
+    <GoogleMap
+      zoom={10}
+      center={{ lat: 44, lng: -80 }}
+      mapContainerClassName="map-container"
+    >
+      <Marker position={{ lat: 44, lng: -80 }} />
+    </GoogleMap>
+  );
 }
 
 export default HomePage;
