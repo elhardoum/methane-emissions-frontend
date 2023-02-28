@@ -53,3 +53,8 @@
 .map {
   margin-top: 4rem;
 }
+.map-container {
+  width: 70%;
+  height: 50vh;
+  margin: auto;
+}
