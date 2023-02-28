@@ -1,19 +1,21 @@
 from flask import Flask, request, send_from_directory, jsonify
-from os import environ
+from os import environ, path
 import config
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import model_from_json
 import json
 import imageio
+import csv
+import re
 
 app = Flask(__name__,
     static_url_path='/',
     static_folder='www')
 app.secret_key = environ.get('FLASK_SECRET', config.FLASK_SECRET)
 
-def predict_and_show_filename(model, input):
-    img = imageio.imread(input)
+def predict_and_show_filename(model, file):
+    img = imageio.imread(file)
     img = tf.cast(img, tf.float32) / 255.
     img = tf.image.resize(img, size=[217, 217])
     img = tf.slice(img, [0, 0, 0], [-1, -1, 3]) # extract first 3 channels
@@ -29,10 +31,41 @@ def get_model():
     loaded_model.load_weights(config.MODEL_LOCATION)
     return loaded_model
 
+def get_csv_map(filename):
+    with open(config.IMAGES_MAP_CSV_FILE, 'r') as csv_file:
+        reader = csv.reader(csv_file)
+
+        headers, source_col, lat_col, lng_col = None, None, None, None
+
+        for row in reader:
+            if not headers:
+                headers = row
+
+                for i,col in enumerate(headers):
+                    if str(col).strip().lower() == 'source_id':
+                        source_col = i
+                    elif str(col).strip().lower() == 'source_lat':
+                        lat_col = i
+                    elif str(col).strip().lower() == 'source_lon':
+                        lng_col = i
+                continue
+
+            if None == source_col:
+                return {}
+
+            if str(row[source_col]).strip().lower() != str(filename).strip().lower():
+                continue
+
+            return {
+                'lat': row[lat_col] if len(row) > lat_col else None,
+                'lng': row[lng_col] if len(row) > lng_col else None,
+            }
+
+
 model = get_model()
 
-@app.route('/', defaults={'path': ''}, methods=['POST'])
-@app.route('/<path:path>', methods=['POST'])
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
 def index(path):
     return send_from_directory('www', path)
 
@@ -45,11 +78,16 @@ def upload():
 
     global model
 
+
     data = predict_and_show_filename(model, file)
 
-    print('@data', data, '@data-end')
+    try:
+        filename = str(path.basename(file.filename)).replace('.png', '')
+        coords = get_csv_map(filename)
+    except:
+        coords = {}
 
-    return jsonify({'success': True, 'dataset': data})
+    return jsonify({'success': True, 'dataset': data, **coords})
 
 if __name__ == '__main__':
     app.run(host=environ.get('HTTP_HOST', '0.0.0.0'), port=environ.get('HTTP_PORT', 3000))
