@@ -64,10 +64,13 @@ def get_csv_map(filename):
 
 model = get_model()
 
-@app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def index(path):
     return send_from_directory('www', path)
+
+@app.route('/')
+def root():
+    return index('index.html')
 
 @app.route('/api/post-image', methods=['POST'])
 def upload():
@@ -83,7 +86,7 @@ def upload():
 
     try:
         filename = str(path.basename(file.filename)).replace('.png', '')
-        coords = get_csv_map(filename)
+        coords = get_csv_map(filename) or {}
     except:
         coords = {}
 

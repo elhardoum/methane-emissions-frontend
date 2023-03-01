@@ -1,6 +1,6 @@
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
-function HomePage() {
+function Wrap(props) {
   const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
   const { isLoaded } = useLoadScript({
@@ -8,19 +8,21 @@ function HomePage() {
   });
   if (!isLoaded) return <div> Loading ...</div>;
 
-  return <Map />;
+  return <Map {...props} />;
 }
 
-function Map() {
+function Map(props) {
+  const { lat=44, lng=-80 } = props
+
   return (
     <GoogleMap
       zoom={10}
-      center={{ lat: 44, lng: -80 }}
+      center={{ lat, lng }}
       mapContainerClassName="map-container"
     >
-      <Marker position={{ lat: 44, lng: -80 }} />
+      <Marker position={{ lat, lng }} />
     </GoogleMap>
   );
 }
 
-export default HomePage;
+export default Wrap;

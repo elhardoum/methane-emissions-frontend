@@ -1,16 +1,13 @@
 import React, { useState } from "react";
+import GoogleMap from "./Map";
 
 // png
 function Form() {
   const [selectedFile, setSelectedFile] = useState();
   const [isSelected, setIsSelected] = useState(false);
-  const [_lat, setLat] = useState();
-  const [_lng, setLng] = useState();
+  const [lat, setLat] = useState();
+  const [lng, setLng] = useState();
   const [pred, setPred] = useState();
-
-  // let lat = 51.0447;
-  // let lng = -114.0719;
-  // let url = `https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyAlj0pxuucJSlRM71sIzoHXVQMqXk9C1Yo&markers=${lat},${lng}&size=640x640&zoom=11`;
 
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -34,8 +31,8 @@ function Form() {
       .then((result) => {
         const { lat, lng, dataset } = result;
         if (lat && lng) {
-          setLat(lat);
-          setLng(lng);
+          setLat(+lat);
+          setLng(+lng);
         }
 
         if (dataset && dataset[0]) {
@@ -68,11 +65,7 @@ function Form() {
       </div>
       {!!pred && <pre>Prediction: {pred}</pre>}
 
-      {Boolean(_lat && _lng) && (
-        <img
-          src={`https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyAlj0pxuucJSlRM71sIzoHXVQMqXk9C1Yo&markers=${_lat},${_lng}&size=640x640&zoom=11`}
-        />
-      )}
+      {Boolean(lat && lng) && <GoogleMap lat={lat} lng={lng} /> }
     </div>
   );
 }
